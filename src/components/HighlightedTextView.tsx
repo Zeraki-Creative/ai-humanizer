@@ -86,7 +86,7 @@ export default function HighlightedTextView({ text, marks, title, legend, maxHei
 
       {/* Body */}
       {isEmpty && emptyState ? (
-        <div className="flex-1 flex flex-col">{emptyState}</div>
+        <div className="flex flex-col items-center justify-center" style={{ minHeight: maxHeight }}>{emptyState}</div>
       ) : (
         <div className="p-5 overflow-y-auto" style={{ maxHeight }}>
           {!hasHighlights && text && (

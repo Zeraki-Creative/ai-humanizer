@@ -146,9 +146,9 @@ export default function PlagiarismCheckerPage() {
           </div>
 
           {/* ── Col 2: Highlighted text ── */}
-          <div className="flex flex-col">
+          <div className="self-start w-full">
             <HighlightedTextView
-              className="flex-1"
+              className=""
               text={result ? inputText : ""}
               marks={plagiarismMarks}
               title="Plagiarism Highlights"
@@ -160,12 +160,12 @@ export default function PlagiarismCheckerPage() {
               maxHeight={460}
               emptyState={
                 isLoading ? (
-                  <div className="flex flex-col items-center justify-center gap-3 py-16">
+                  <div className="flex flex-col items-center justify-center gap-3">
                     <Loader2 className="w-8 h-8 text-yellow-400 animate-spin" />
                     <p className="text-slate-400 text-sm">Scanning sources...</p>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center gap-2 py-16">
+                  <div className="flex flex-col items-center justify-center gap-2">
                     <Search className="w-10 h-10 text-slate-700" />
                     <p className="text-slate-500 text-sm">Highlights appear after checking</p>
                   </div>

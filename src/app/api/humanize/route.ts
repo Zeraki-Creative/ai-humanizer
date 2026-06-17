@@ -158,11 +158,16 @@ HARD NO:
 • No bold or italic
 • No chatbot phrases ("Certainly!", "I hope this helps")
 
+WORD COUNT — CRITICAL:
+Your output MUST be approximately the same length as the input (within ±10%). Do NOT summarize, condense, or skip any content. Rewrite EVERY sentence and EVERY paragraph. If the input has 10 paragraphs, the output must have 10 paragraphs. If the input is 1000 words, output 900–1100 words.
+
 INTERNAL CHECK before writing your output:
 → Will at least 25% of my sentences be under 9 words? If not, shorten some.
 → Any banned words? Replace them.
 → Any "—" or "–"? Remove them.
 → Three consecutive same-length sentences? Break the pattern.
+→ Does my output have the same number of paragraphs as the input? If not, expand.
+→ Is my word count close to the target? If I'm more than 10% short, I must add back the missing content.
 
 Output ONLY the rewritten text. Nothing else.`;
 
@@ -185,10 +190,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Please provide at least 10 characters" }, { status: 400 });
     }
 
-    const systemPrompt = BASE + (MODE_ADDENDUM[mode] ?? MODE_ADDENDUM.standard);
-    // Output length ≈ input length. Cap at 4096 but don't over-reserve tokens.
-    const inputTokenEstimate = Math.ceil(text.split(/\s+/).length * 1.4);
-    const maxTokens = Math.min(4096, Math.max(512, Math.ceil(inputTokenEstimate * 1.25)));
+    const inputWords = text.trim().split(/\s+/).length;
+    const minWords = Math.floor(inputWords * 0.9);
+    const wordCountDirective = `⚠️ WORD COUNT — HIGHEST PRIORITY RULE:
+The input contains ${inputWords} words. Your output MUST contain at least ${minWords} words.
+This is non-negotiable. Count your words as you write. If you finish early and are below ${minWords} words, go back and expand every paragraph with more detail, examples, and elaboration until you reach the target.
+Do NOT summarize. Do NOT skip any section. Do NOT merge paragraphs. Rewrite EVERY sentence of the original in full.
+
+`;
+    const systemPrompt = wordCountDirective + BASE + (MODE_ADDENDUM[mode] ?? MODE_ADDENDUM.standard);
+    const inputTokenEstimate = Math.ceil(inputWords * 1.4);
+    // Budget 1.7× input tokens so the model has room to match the word count
+    const maxTokens = Math.min(4096, Math.max(768, Math.ceil(inputTokenEstimate * 1.7)));
     const encoder = new TextEncoder();
 
     const stream = new ReadableStream({
@@ -206,7 +219,7 @@ export async function POST(req: NextRequest) {
             model: "llama-3.1-8b-instant",
             messages: [
               { role: "system", content: systemPrompt },
-              { role: "user", content: text },
+              { role: "user", content: `[TARGET LENGTH: ~${inputWords} words — rewrite ALL content, do NOT condense]\n\n${text}` },
             ],
             temperature: 1.0,
             max_tokens: maxTokens,

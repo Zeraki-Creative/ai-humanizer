@@ -5,6 +5,7 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const ANTI_AI_BASE = `
 Apply these transformations to avoid AI detection patterns:
+• WORD COUNT: Match the input length within ±10%. Do NOT summarize, skip, or condense any content. Rewrite every sentence and every paragraph. The output paragraph count must match the input.
 • Vary sentence lengths: short (under 8 words), medium, and long (25+ words) must all appear. Never three similar-length sentences in a row.
 • Use contractions: "it's", "don't", "can't", "won't", "we're", "they're" — always, never the formal expanded form.
 • Replace academic connectors: "furthermore"→"also"/"and", "moreover"→"on top of that", "however"→"but"/"yet", "therefore"→"so", "in order to"→"to".
@@ -77,9 +78,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Please provide at least 10 characters" }, { status: 400 });
     }
 
-    const systemPrompt = MODE_PROMPTS[mode] || MODE_PROMPTS.standard;
-    const inputTokenEstimate = Math.ceil(text.split(/\s+/).length * 1.4);
-    const maxTokens = Math.min(4096, Math.max(512, Math.ceil(inputTokenEstimate * 1.25)));
+    const inputWords = text.trim().split(/\s+/).length;
+    const minWords = Math.floor(inputWords * 0.9);
+    const wordCountDirective = `⚠️ WORD COUNT — HIGHEST PRIORITY RULE:
+The input contains ${inputWords} words. Your output MUST contain at least ${minWords} words.
+This is non-negotiable. Count your words as you write. If you finish early and are below ${minWords} words, go back and expand every paragraph with more detail, examples, and elaboration until you reach the target.
+Do NOT summarize. Do NOT skip any section. Do NOT merge paragraphs. Rewrite EVERY sentence of the original in full.
+
+`;
+    const systemPrompt = wordCountDirective + (MODE_PROMPTS[mode] || MODE_PROMPTS.standard);
+    const inputTokenEstimate = Math.ceil(inputWords * 1.4);
+    const maxTokens = Math.min(4096, Math.max(768, Math.ceil(inputTokenEstimate * 1.7)));
 
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
@@ -89,7 +98,7 @@ export async function POST(req: NextRequest) {
             model: "llama-3.1-8b-instant",
             messages: [
               { role: "system", content: systemPrompt },
-              { role: "user", content: text },
+              { role: "user", content: `[TARGET LENGTH: ~${inputWords} words — rewrite ALL content, do NOT condense]\n\n${text}` },
             ],
             stream: true,
             temperature: 0.92,
