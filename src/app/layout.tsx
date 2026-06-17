@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 const SITE_URL = "https://humanizer.zerakicreative.com";
@@ -217,6 +218,27 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col antialiased">{children}</body>
+
+      {/* Zeraki Cookie Consent — auto-loads GA4 after consent */}
+      <Script id="zeraki-cookie-consent" strategy="afterInteractive">
+        {`
+          (function() {
+            var s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/npm/@zerakicreative/cookie-consent@1.0.3/dist/zeraki-cookie-consent.iife.js';
+            s.onload = function() {
+              ZerakiCookieBanner.init({
+                "position": "bottom-left",
+                "floatingButtonPosition": "bottom-left",
+                "googleAnalytics": {
+                  "measurementId": "G-76L8YMEVG0",
+                  "autoLoad": true
+                }
+              });
+            };
+            document.head.appendChild(s);
+          })();
+        `}
+      </Script>
     </html>
   );
 }
