@@ -11,6 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/ai-detector`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE}/plagiarism-checker`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE}/insights`, lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },
+    { url: `${BASE}/privacy-policy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
+    { url: `${BASE}/cookie-policy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
   ];
 
   const articlePages: MetadataRoute.Sitemap = articles.map((a) => ({

@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/5 bg-[#0A0A1A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-1.5 mb-4">
@@ -89,12 +89,46 @@ export default function Footer() {
               ))}
             </ul>
           </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+              Legal
+            </h3>
+            <ul className="space-y-2.5">
+              {[
+                { href: "/privacy-policy", label: "Privacy Policy" },
+                { href: "/cookie-policy", label: "Cookie Policy" },
+                { href: "/insights", label: "Insights" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-slate-400 hover:text-indigo-400 text-sm transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className="border-t border-white/5 mt-10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-sm">
-            © 2025 AIHumanizer. All rights reserved.
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
+            <p className="text-slate-500 text-sm">
+              © 2026 AI Humanizer by Zeraki Creative. All rights reserved.
+            </p>
+            <div className="flex items-center gap-4">
+              <Link href="/privacy-policy" className="text-slate-600 hover:text-slate-400 text-xs transition-colors">
+                Privacy Policy
+              </Link>
+              <span className="text-slate-700 text-xs">·</span>
+              <Link href="/cookie-policy" className="text-slate-600 hover:text-slate-400 text-xs transition-colors">
+                Cookie Policy
+              </Link>
+            </div>
+          </div>
           <p className="text-slate-500 text-sm">
             Designed &amp; developed by{" "}
             <a

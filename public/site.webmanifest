@@ -1,0 +1,53 @@
+{
+  "name": "AI Humanizer — Free & Unlimited",
+  "short_name": "AI Humanizer",
+  "description": "The best free AI text humanizer, paraphraser, AI detector, and plagiarism checker. No word limits, no signup.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07071A",
+  "theme_color": "#07071A",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["productivity", "education", "utilities"],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AI Humanizer",
+      "short_name": "Humanizer",
+      "description": "Humanize AI-generated text instantly",
+      "url": "/humanizer",
+      "icons": [{ "src": "/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "AI Paraphraser",
+      "short_name": "Paraphraser",
+      "description": "Paraphrase text in 5 modes",
+      "url": "/paraphraser",
+      "icons": [{ "src": "/android-chrome-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}

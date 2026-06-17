@@ -14,7 +14,7 @@ const MODES = [
 export default function HumanizerPage() {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
-  const [mode, setMode] = useState("standard");
+  const [mode, setMode] = useState("enhanced");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);

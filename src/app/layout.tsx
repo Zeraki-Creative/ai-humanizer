@@ -111,6 +111,21 @@ export const metadata: Metadata = {
   verification: {
     google: "google-site-verification-placeholder",
   },
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+    ],
+    shortcut: "/favicon-32x32.png",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      { rel: "mask-icon", url: "/favicon-32x32.png", color: "#07071A" },
+    ],
+  },
+  manifest: "/site.webmanifest",
 };
 
 const websiteJsonLd = {
@@ -185,6 +200,9 @@ export default function RootLayout({
         />
         <link rel="canonical" href={SITE_URL} />
         <meta name="theme-color" content="#07071A" />
+        <meta name="msapplication-TileColor" content="#07071A" />
+        <meta name="msapplication-TileImage" content="/mstile-150x150.png" />
+        <meta name="msapplication-config" content="none" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
